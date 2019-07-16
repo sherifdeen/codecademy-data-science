@@ -1,0 +1,84 @@
+/*
+	Exploration: Familiarize yourself with the dataset.
+*/
+
+
+/*How many distinct zip codes are in this dataset?*/
+
+SELECT DISTINCT COUNT(zip_code) AS "Zip Code Count"
+FROM homevalue;
+
+
+/*How many zip codes are from each state?*/
+
+SELECT state, COUNT(zip_code) AS "Zip Code Count"
+FROM homevalue
+GROUP BY state;
+
+/*What range of years are represented in the data?*/
+
+SELECT  MIN(CAST(substr(date, 1, 4) AS INTEGER)) AS "Begin (Year)", 
+MAX(CAST(substr(date, 1, 4) AS INTEGER)) AS " End (Year)"
+FROM homevalue;
+
+
+/*Using the most recent month of data available, what is the range of estimated home values across the      	nation?*/
+
+SELECT  MAX(CAST(substr(date, 1, 4) AS INTEGER)) AS "Year", 
+MAX(CAST(substr(date, 6) AS INTEGER))  AS "Recent Month"
+FROM homevalue;
+
+SELECT MIN(CAST(value AS INTEGER)) AS "Min. Est. Home Value",
+MAX(CAST(value AS INTEGER)) AS "Max. Est. Home Value"
+FROM homevalue;
+
+
+/*-- Using the most recent month of data available, which states have the highest average home values? How 		about the lowest?*/
+
+SELECT state, AVG(CAST(value AS INTEGER)) AS "Avg. Home Value"
+FROM homevalue
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10;
+
+
+SELECT state, AVG(CAST(value AS INTEGER)) AS "Avg. Home Value"
+FROM homevalue
+GROUP BY 1
+ORDER BY 2 ASC
+LIMIT 10;
+
+
+/*
+
+Intermediate Challenge
+
+	-- What is the percent change 7 in average home values from 2007 to 2017 by state? How about from 1997 to 		2017?
+		Hint: We can use the WITH clause to create temporary tables containing the average home values for each of those years, then join them together to compare the change over time.
+	-- How would you describe the trend in home values for each state from 1997 to 2017? How about from 2007 to 	2017? Which states would you recommend for making real estate investments?
+*/
+
+WITH query_2007 AS (
+SELECT state AS "state_07", AVG(CAST(value AS INTEGER)) AS "ahv_2007"
+FROM homevalue
+WHERE substr(date, 1, 4) = '2007'
+GROUP BY 1
+ORDER BY 2
+),
+query_2017 AS (
+SELECT state AS "state_17", AVG(CAST(value AS INTEGER)) AS "ahv_2017"
+FROM homevalue
+WHERE substr(date, 1, 4) = '2017'
+GROUP BY 1
+ORDER BY 2
+)
+
+SELECT state_17 AS "state", ROUND(((query_2017.ahv_2017 - query_2007.ahv_2007)/query_2007.ahv_2007) * 100, 2) AS 
+"percent_change"
+FROM query_2017
+JOIN query_2007
+ON query_2017.state_17 = query_2007.state_07
+GROUP BY 1
+ORDER BY 2 ASC;
+
+
