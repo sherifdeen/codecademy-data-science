@@ -1,0 +1,39 @@
+/*
+	Exploration: Familiarize yourself with the dataset.
+*/
+
+
+/*How many distinct zip codes are in this dataset?*/
+
+SELECT DISTINCT COUNT(zip_code) AS "Zip Code Count"
+FROM homevalue;
+
+
+/*How many zip codes are from each state?*/
+
+SELECT state, COUNT(zip_code) AS "Zip Code Count"
+FROM homevalue
+GROUP BY state;
+
+/*What range of years are represented in the data?*/
+
+SELECT  MIN(CAST(substr(date, 1, 4) AS INTEGER)) AS "Begin (Year)", 
+MAX(CAST(substr(date, 1, 4) AS INTEGER)) AS " End (Year)"
+FROM homevalue;
+
+
+/*Using the most recent month of data available, what is the range of estimated home values across the      	nation?*/
+
+SELECT  MAX(CAST(substr(date, 1, 4) AS INTEGER)) AS "Year", 
+MAX(CAST(substr(date, 6) AS INTEGER))  AS "Recent Month"
+FROM homevalue;
+
+SELECT MIN(CAST(value AS INTEGER)) AS "Min. Est. Home Value",
+MAX(CAST(value AS INTEGER)) AS "Max. Est. Home Value"
+FROM homevalue;
+
+
+/*-- Using the most recent month of data available, which states have the highest average home values? How 		about the lowest?*/
+
+
+
