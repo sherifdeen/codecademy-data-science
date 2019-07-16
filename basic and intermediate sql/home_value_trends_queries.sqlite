@@ -1,5 +1,5 @@
 /*
-	Exploration: Familiarize yourself with the dataset.
+Exploration: Familiarize yourself with the dataset.
 */
 
 
@@ -22,7 +22,7 @@ MAX(CAST(substr(date, 1, 4) AS INTEGER)) AS " End (Year)"
 FROM homevalue;
 
 
-/*Using the most recent month of data available, what is the range of estimated home values across the      	nation?*/
+/*Using the most recent month of data available, what is the range of estimated home values across the nation?*/
 
 SELECT  MAX(CAST(substr(date, 1, 4) AS INTEGER)) AS "Year", 
 MAX(CAST(substr(date, 6) AS INTEGER))  AS "Recent Month"
@@ -33,7 +33,7 @@ MAX(CAST(value AS INTEGER)) AS "Max. Est. Home Value"
 FROM homevalue;
 
 
-/*-- Using the most recent month of data available, which states have the highest average home values? How 		about the lowest?*/
+/*Using the most recent month of data available, which states have the highest average home values? How about the lowest?*/
 
 SELECT state, AVG(CAST(value AS INTEGER)) AS "Avg. Home Value"
 FROM homevalue
@@ -53,9 +53,11 @@ LIMIT 10;
 
 Intermediate Challenge
 
-	-- What is the percent change 7 in average home values from 2007 to 2017 by state? How about from 1997 to 		2017?
-		Hint: We can use the WITH clause to create temporary tables containing the average home values for each of those years, then join them together to compare the change over time.
-	-- How would you describe the trend in home values for each state from 1997 to 2017? How about from 2007 to 	2017? Which states would you recommend for making real estate investments?
+	-- What is the percent change 7 in average home values from 2007 to 2017 by state? How about from 1997 to 2017?
+		Hint: We can use the WITH clause to create temporary tables containing the average home values for each 
+		of those years, then join them together to compare the change over time.
+	-- How would you describe the trend in home values for each state from 1997 to 2017? How about from 2007 to 	
+		2017? Which states would you recommend for making real estate investments?
 */
 
 WITH query_2007 AS (
